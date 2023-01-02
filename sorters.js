@@ -37,6 +37,9 @@ async function QuickSort(aImage, aAscending)
 
     const SplitElements = async (aStart, aEnd) => 
     {
+        if (aImage.stop)
+            return;
+
         if (aStart < aEnd)
         {
             const lIndexSortedValue = await SortValue(aStart, aEnd);
@@ -102,6 +105,9 @@ async function QuickSortRandomPivot(aImage, aAscending)
 
     const SplitElements = async (aStart, aEnd) => 
     {
+        if (aImage.stop)
+            return;
+
         if (aStart < aEnd)
         {
             const lIndexSortedValue = await SortValue(aStart, aEnd);
@@ -212,6 +218,9 @@ async function MergeSort(aImage, aAscending)
 
     const SplitAndMerge = async (aStart, aEnd) => 
     {
+        if (aImage.stop)
+            return;
+
         if (aStart >= aEnd)
         { return; }
         
@@ -225,6 +234,9 @@ async function MergeSort(aImage, aAscending)
         // Continue to split and merge the upper half of the current segment (lMid + 1 to aEnd).
         // Once this returns, said upper half will have been sorted.
         await SplitAndMerge(lMid + 1, aEnd);
+
+        if (aImage.stop)
+            return;
         
         // Combine the lower (aStart to lMid) and upper (lMid + 1 to aEnd) segments which, individually, are sorted.
         await Merge(aStart, lMid, aEnd);
@@ -310,6 +322,9 @@ async function MergeSortIterative(aImage, aAscending)
     {
         for (lStart = 0; lStart <= l_container_max_index - Math.floor(l_segment_size / 2); lStart += l_segment_size) // (e).
         {
+            if (aImage.stop)
+                return;
+
             // (f). Calculate middle index of segment lStart to lEnd (max index of lower half).
             lMid = lStart + Math.floor((l_segment_size / 2)) - 1;
 
@@ -336,6 +351,9 @@ async function HeapSort(aImage, aAscending)
 {
     const MaxHeapify = async (aIndexLastNode, aIndexParentNode) => 
     {
+        if (aImage.stop)
+            return;
+
         // (a).
         let lIndexMaxValue = aIndexParentNode;
 
@@ -375,6 +393,9 @@ async function HeapSort(aImage, aAscending)
 
     const MinHeapify = async (aIndexLastNode, aIndexParentNode) => 
     {
+        if (aImage.stop)
+            return;
+
         // (a).
         let lIndexMinValue = aIndexParentNode;
 
@@ -423,10 +444,71 @@ async function HeapSort(aImage, aAscending)
 
     for (let lIndexLastNode = aImage.length - 1; lIndexLastNode >= 0;)
     {
+        if (aImage.stop)
+            return;
+
         await aImage.SwapPixels(0, lIndexLastNode);
 
         aAscending ? await MaxHeapify(--lIndexLastNode, 0) : 
                      await MinHeapify(--lIndexLastNode, 0);     
+    }
+
+}
+
+async function ShellSort(aImage, aAscending)
+{
+    // source: https://www.geeksforgeeks.org/shellsort/
+
+    // The operator to use in the while loop's condition.
+    const lOperator = aAscending ? utils.CompOps.G : utils.CompOps.L;
+
+    // The length of the image (i.e. number of pixels).
+    let lLengthImage = aImage.length;
+  
+    /*
+    * Perform insertion sort on all sublists of aImage where each sublist is comprised of elements of aImage that
+      are 'gap' indexes apart from each other.
+    */
+    for (let gap = Math.floor(lLengthImage / 2); gap > 0; gap = Math.floor(gap / 2))
+    {
+        // The maximum index (which is an index of aImage) of the current sublist.
+        let lIndexMaxSubList = gap;
+
+        /*
+        * Each iteration of this for loop performs an insertion sort on one of the sublists. 
+        * A sublist's size, given by lIndexMaxSubList, is increased by 1 every time it is iterated over.
+        * Each successive iteration of the loop focuses on a different sublist. Each sublist is iterated over several 
+          times (equal to its (final) length minus 1).
+        * Each sublist mustn't contain the same element as another sublist.
+        * The number of elements in a sublist is, at most, n / gap (s = n /gap); the number of sublists is n / s.
+        */
+        for (; lIndexMaxSubList < lLengthImage; ++lIndexMaxSubList)
+        {
+            //const lValueToInsert = aImage.GetClientHeight(lIndexMaxSubList);
+            const lValueToInsert = { index: aImage.GetIndex(lIndexMaxSubList), colour: aImage.GetPixelColour(lIndexMaxSubList) };
+
+            // The index of the sublist at which lValueToInsert will be inserted.
+            let lIndexOfInsert = lIndexMaxSubList;
+
+            // The lowest index of the sublist.
+            let lIndexMinSublist = lIndexMaxSubList % gap;
+
+            for (; lIndexOfInsert > lIndexMinSublist && aImage.CompareValue(lIndexOfInsert - gap, lOperator, lValueToInsert.index);
+                   lIndexOfInsert -= gap)
+            {
+                if (aImage.stop)
+                    return;
+
+                const lValue = { index: aImage.GetIndex(lIndexOfInsert - gap), colour: aImage.GetPixelColour(lIndexOfInsert - gap) };
+
+                //aImage.SetHeight(lIndexOfInsert, aImage.GetHeight(lIndexOfInsert - gap));
+                await aImage.SetIndexAndPixel(lIndexOfInsert, lValue.index, lValue.colour);
+            }
+
+            //aImage.SetHeight(lIndexOfInsert, `${lValueToInsert}px`);
+            await aImage.SetIndexAndPixel(lIndexOfInsert, lValueToInsert.index, lValueToInsert.colour);
+        }
+
     }
 
 }
@@ -436,13 +518,14 @@ const Sorters =
 {
     // "Bubble Sort": BubbleSort,
     // "Cocktail-Shaker Sort": CocktailShakerSort,
-    "Selection Sort": SelectionSort,
+    //"Selection Sort": SelectionSort,
     // "Insertion Sort": InsertionSort,
     "Quick Sort": QuickSort,
     "Quick Sort (Random)": QuickSortRandomPivot,
     "Merge Sort": MergeSort,
     "Merge Sort (Iterative)": MergeSortIterative,
-    "Heap Sort": HeapSort
+    "Heap Sort": HeapSort,
+    "Shell Sort": ShellSort
 };
 
 export { Sorters as default };

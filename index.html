@@ -2,7 +2,7 @@
 <html>
 
     <head>
-        <title>Sorting Visualiser (Image)</title>
+        <title>Sort Visualiser (Image)</title>
         <script src = "./script.js" type = "module"></script>
         <link rel = "stylesheet" href = "style.css">
 
@@ -35,14 +35,17 @@
         <!-- The container that holds the 'secondary' UI elements -->
         <div id = "secondaryControls" class = "outerContainer uiContainer controls">
 
+            <button type = "button" id = "btnStop" class = "uiTextElement uiTextContainer interactable">Stop</button>
+
             <button type = "button" id = "btnStep" class = "uiTextElement uiTextContainer interactable">Step</button>
+
             <label for="chkStep" class = "uiTextElement uiTextContainer interactable">
                 Step
                 <input type="checkbox" id = "chkStep">
             </label>
 
             <label for = "rngSpeed" class = "uiTextElement uiTextContainer interactable">
-                Sort Speed
+                Speed
                 <input type = "range" id = "rngSpeed" min = "500" max = "10000" step = "100" value = "1000" >
             </label>
 
@@ -64,7 +67,7 @@
 
         <div id = "footer">
             <p class = "uiTextElement footerText">If you wish to contribute to the development of this website, see its 
-            <a href = "https://github.com/brett-macisaac/sorting-visualiser-js">GitHub repo</a></p>
+            <a href = "https://github.com/brett-macisaac/sorting-visualiser-image-js">GitHub repo</a></p>
         </div>
     </body>
 

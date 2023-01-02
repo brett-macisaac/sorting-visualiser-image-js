@@ -17,6 +17,9 @@ class SortableImage
     #fCountWrites = 0;
     #fMaxCount = 10000;
 
+    // A flag that, when true, indicates that the current process (sort or shuffle), should stop.
+    #fStopProcess = false;
+
     constructor(aSrcImg, aParent)
     {
         this.#fCanvas = document.createElement("canvas");
@@ -66,6 +69,11 @@ class SortableImage
         return this.#fIndexesPixels.length;
     }
 
+    get stop()
+    {
+        return this.#fStopProcess;
+    }
+
     GetIndex(aIndex)
     {
         return this.#fIndexesPixels[aIndex];
@@ -84,21 +92,29 @@ class SortableImage
 
     async Shuffle()
     {
+        this.Reset();
+
         const lNumPixels = this.#fIndexesPixels.length;
 
         for (let i = 0; i < lNumPixels; ++i)
         {
+            if (this.#fStopProcess)
+                break;
+
             const lIndexRandom = utils.GetRandom(i, lNumPixels - 1);
 
             await this.SwapPixels(i, lIndexRandom);
         }
 
-        this.ResetCount();
+        this.Reset();
+
         this.Update();
     }
 
     async Sort(aSorter, aAscending)
     {
+        this.Reset();
+        
         await aSorter(this, aAscending);
         //await QuickSort(gArrayIndexes, gImageData.data, true);
         //await MergeSortIterative(gArrayIndexes, gImageData.data, true);
@@ -106,13 +122,17 @@ class SortableImage
 
         // console.log("Writes: " + PixelManager.countWrites);
 
-        this.ResetCount();
         this.Update();
 
         //this.#fCanvasContext.putImageData(this.#fImageData, 0, 0);
 
         // console.log("Sorting complete");
         // console.log(gArrayIndexes);
+    }
+
+    Stop()
+    {
+        this.#fStopProcess = true;
     }
 
     async SwapPixels(aIndex1, aIndex2)
@@ -168,10 +188,11 @@ class SortableImage
         return [ lPixelArray[lIndexRed], lPixelArray[lIndexRed + 1], lPixelArray[lIndexRed + 2] ];
     }
 
-    ResetCount()
+    Reset()
     {
         this.#fCount = 0;
         this.#fCountWrites = 0;
+        this.#fStopProcess = false;
     }
 
     async IncrementCount()
@@ -192,6 +213,11 @@ class SortableImage
     Compare(aIndex1, aOperator, aIndex2)
     {
         return utils.Compare(this.#fIndexesPixels[aIndex1], aOperator, this.#fIndexesPixels[aIndex2])
+    }
+
+    CompareValue(aIndex, aOperator, aValue)
+    {
+        return utils.Compare(this.#fIndexesPixels[aIndex], aOperator, aValue);
     }
 
 }
