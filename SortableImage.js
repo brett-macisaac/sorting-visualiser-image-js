@@ -20,8 +20,15 @@ class SortableImage
     // A flag that, when true, indicates that the current process (sort or shuffle), should stop.
     #fStopProcess = false;
 
-    constructor(aSrcImg, aParent)
+    #fBtnStep;
+
+    #fChkStep
+
+    constructor(aSrcImg, aParent, aBtnStep, aChkStep)
     {
+        this.#fBtnStep = aBtnStep;
+        this.#fChkStep = aChkStep;
+
         this.#fCanvas = document.createElement("canvas");
 
         // Add this.#fCanvas to aParent.
@@ -201,7 +208,11 @@ class SortableImage
         {
             this.#fCount = 0;
             this.Update();
-            await utils.SleepFor(1);
+
+            if (this.#fChkStep.checked)
+                await utils.SleepUntilClicks([this.#fBtnStep, this.#fChkStep]);
+            else
+                await utils.SleepFor(1);
         }
     }
 

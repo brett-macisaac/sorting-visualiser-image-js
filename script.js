@@ -10,7 +10,8 @@ const gBtnSort = document.getElementById("btnSort");
 const gChkAscending = document.getElementById("chkAscending");
 const gCmbSorters = document.getElementById("cmbSorters");
 
-const gSortableImage = new SortableImage("mona_lisa_small.jpg", document.getElementById("conImageCanvas")); // mona_lisa_tiny
+const gSortableImage = new SortableImage("mona_lisa_small.jpg", document.getElementById("conImageCanvas"),
+                                         document.getElementById("btnStep"), document.getElementById("chkStep"));
 
 const gBtnStop = document.getElementById("btnStop");
 const gRngSpeed = document.getElementById("rngSpeed");
