@@ -9,12 +9,14 @@ const gBtnShuffle = document.getElementById("btnShuffle");
 const gBtnSort = document.getElementById("btnSort");
 const gChkAscending = document.getElementById("chkAscending");
 const gCmbSorters = document.getElementById("cmbSorters");
+const gUplImgage = document.getElementById("uplImage");
 
-const gSortableImage = new SortableImage("mona_lisa_small.jpg", document.getElementById("conImageCanvas"),
+const gSortableImage = new SortableImage("./images/mona_lisa_small.jpg", document.getElementById("conImageCanvas"),
                                          document.getElementById("btnStep"), document.getElementById("chkStep"));
 
 const gBtnStop = document.getElementById("btnStop");
 const gRngSpeed = document.getElementById("rngSpeed");
+const gBtnDownload = document.getElementById("btnDownload")
 
 
 function init()
@@ -22,11 +24,28 @@ function init()
     gBtnShuffle.onclick = Shuffle;
     gBtnSort.onclick = Sort;
     gBtnStop.onclick = Stop;
+    gBtnDownload.onclick = Download;
 
     gRngSpeed.onchange = ChangeSortSpeed;
     ChangeSortSpeed();
 
     PopulateComboBox();
+
+    gUplImgage.onchange = function() 
+    {
+        const lFile = gUplImgage.files[0];
+
+        const lReader = new FileReader();
+
+        lReader.onload = function()
+        {
+            //console.log(lReader.result);
+            gSortableImage.SetImage(lReader.result);
+        }
+
+        lReader.readAsDataURL(lFile);
+    }
+
 }
 window.onload = init;
 
@@ -57,6 +76,15 @@ function ChangeSortSpeed()
 function Stop()
 {
     gSortableImage.Stop();
+}
+
+function Download()
+{
+    const lLink = document.createElement('a');
+    lLink.download = 'download.png';
+    lLink.href = gSortableImage.canvas.toDataURL();
+    lLink.click();
+    lLink.delete;
 }
 
 function ToggleUIDisabled()

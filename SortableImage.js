@@ -36,10 +36,47 @@ class SortableImage
 
         this.#fCanvasContext = this.#fCanvas.getContext('2d');
 
+        this.SetImage(aSrcImg);
+        return;
+    }
+
+    get length()
+    {
+        return this.#fIndexesPixels.length;
+    }
+
+    get stop()
+    {
+        return this.#fStopProcess;
+    }
+
+    get canvas()
+    {
+        return this.#fCanvas;
+    }
+
+    GetIndex(aIndex)
+    {
+        return this.#fIndexesPixels[aIndex];
+    }
+
+    SetMaxCount(aMaxCount)
+    {
+        this.#fMaxCount = aMaxCount;
+
+        if (this.#fCount >= this.#fMaxCount)
+        {
+            this.#fCount = this.#fMaxCount - 1;
+        }
+
+    }
+
+    SetImage(aSrcImg)
+    {
         // The image to display in this.#fCanvas.
         const lImage = document.createElement("img");
         lImage.crossOrigin = 'anonymous'; // ???
-        lImage.src = `./images/${aSrcImg}`;
+        lImage.src = aSrcImg;
         lImage.alt = "Image to sort.";
 
         lImage.addEventListener('load', 
@@ -68,32 +105,6 @@ class SortableImage
 
                 this.#fIndexesPixels = Array.from({ length: lNumPixels }, (element, index) => index);
             });
-
-    }
-
-    get length()
-    {
-        return this.#fIndexesPixels.length;
-    }
-
-    get stop()
-    {
-        return this.#fStopProcess;
-    }
-
-    GetIndex(aIndex)
-    {
-        return this.#fIndexesPixels[aIndex];
-    }
-
-    SetMaxCount(aMaxCount)
-    {
-        this.#fMaxCount = aMaxCount;
-
-        if (this.#fCount >= this.#fMaxCount)
-        {
-            this.#fCount = this.#fMaxCount - 1;
-        }
 
     }
 

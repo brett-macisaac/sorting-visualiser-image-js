@@ -42,11 +42,22 @@ body
     margin-top: 4vh;
 }
 
-#elements
+#uplImage
+{
+    display: none;
+}
+
+#conImageCanvas > canvas
+{
+    width: fit-content;
+    height: fit-content;
+}
+
+/* #elements
 {
     width: 80%;
     height: 50vh;
-}
+} */
 
 .uiContainer
 {
@@ -141,7 +152,7 @@ label.uiTextElement
 
     text-align: center;
 
-    margin-right: 0px;
+    /* margin-right: 0px; */
 }
 
 #rngElements
@@ -170,6 +181,11 @@ div.stat
 }
 
 .controls label:last-child
+{
+    margin-right: 0;
+}
+
+.controls button:last-child
 {
     margin-right: 0;
 }
