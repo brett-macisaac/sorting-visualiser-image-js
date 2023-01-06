@@ -203,6 +203,45 @@ function GetMapFromLocalStorage(aKey)
     return new Map(JSON.parse(lString));
 }
 
+/*
+* If the supplied dimensions (aWidth and aHeight) fit within their desired maximums, said dimensions are returned; 
+  otherwise, the dimensions are altered (preserving aspect ratio) such that they both are at or below their maximums.
+*/
+function FitMaxDimensions(aWidth, aHeight, aMaxWidth, aMaxHeight)
+{
+    // The image's aspect ratio.
+    const lAspectRatio = aWidth / aHeight;
+
+    if (aWidth > aMaxWidth && aHeight > aMaxHeight)
+    {
+        aWidth = aMaxWidth;
+
+        aHeight = aWidth / lAspectRatio;
+
+        // If the height is still greater than the max after adjusting for width.
+        if (aHeight > aMaxHeight)
+        {
+            aHeight = aMaxHeight;
+
+            aWidth = aHeight * lAspectRatio;
+        }
+    }
+    else if (aWidth > aMaxWidth)
+    {
+        aWidth = aMaxWidth;
+
+        aHeight = aWidth / lAspectRatio;
+    }
+    else if (aHeight > aMaxHeight)
+    {
+        aHeight = aMaxHeight;
+
+        aWidth = aHeight * lAspectRatio;
+    }
+
+    return { width: aWidth, height: aHeight };
+}
+
 function Compare(aNum1, aOperator, aNum2)
 {
     if (aOperator === utils.CompOps.G)
@@ -257,6 +296,7 @@ const utils =
     SetInLocalStorage: SetInLocalStorage,
     GetFromLocalStorage: GetFromLocalStorage,
     GetMapFromLocalStorage: GetMapFromLocalStorage,
+    FitMaxDimensions: FitMaxDimensions,
     Compare: Compare,
     CompOps: CompOps
 };

@@ -14,7 +14,7 @@ class SortableImage
     #fIndexesPixels;
 
     #fCount = 0;
-    #fCountWrites = 0;
+    //#fCountWrites = 0;
     #fMaxCount = 10000;
 
     // A flag that, when true, indicates that the current process (sort or shuffle), should stop.
@@ -24,10 +24,16 @@ class SortableImage
 
     #fChkStep
 
-    constructor(aSrcImg, aParent, aBtnStep, aChkStep)
+    #fMaxWidth;
+    #fMaxHeight;
+
+    constructor(aSrcImg, aParent, aBtnStep, aChkStep, aMaxWidth, aMaxHeight)
     {
         this.#fBtnStep = aBtnStep;
         this.#fChkStep = aChkStep;
+
+        this.#fMaxWidth = aMaxWidth;
+        this.#fMaxHeight = aMaxHeight;
 
         this.#fCanvas = document.createElement("canvas");
 
@@ -85,13 +91,23 @@ class SortableImage
                 console.log("Image width: " + lImage.width);
                 console.log("Image height: " + lImage.height);
 
-                // this.#fCanvas.style.width = `${lImage.width}px`;
-                // this.#fCanvas.style.height = `${lImage.height}px`;
+                // Ensure that the image's dimensions aren't above the maximums.
+                if (lImage.width > this.#fMaxWidth || lImage.height > this.#fMaxHeight)
+                {
+
+                    const lNewDimensions = utils.FitMaxDimensions(lImage.width, lImage.height, this.#fMaxWidth, this.#fMaxHeight);
+                
+                    console.log("New Image width: " + Math.floor(lNewDimensions.width));
+                    console.log("New Image height: " + Math.floor(lNewDimensions.height));
+
+                    lImage.width = Math.floor(lNewDimensions.width);
+                    lImage.height = Math.floor(lNewDimensions.height);
+                }
 
                 this.#fCanvas.width = lImage.width;
                 this.#fCanvas.height = lImage.height;
 
-                this.#fCanvasContext.drawImage(lImage, 0, 0);
+                this.#fCanvasContext.drawImage(lImage, 0, 0, lImage.width, lImage.height);
 
                 const lStyleCanvas = window.getComputedStyle(this.#fCanvas);
 
@@ -157,7 +173,7 @@ class SortableImage
     {
         const lPixelArray = this.#fImageData.data;
 
-        this.countWrites += 2;
+        //this.#fCountWrites += 2;
 
         const lIndexRed1 = aIndex1 * 4;
         const lIndexRed2 = aIndex2 * 4;
@@ -183,7 +199,7 @@ class SortableImage
     {
         const lPixelArray = this.#fImageData.data;
 
-        ++(this.countWrites);
+        //++(this.#fCountWrites);
 
         const lIndexRed = aIndex * 4;
 
@@ -209,7 +225,7 @@ class SortableImage
     Reset()
     {
         this.#fCount = 0;
-        this.#fCountWrites = 0;
+        //this.#fCountWrites = 0;
         this.#fStopProcess = false;
     }
 

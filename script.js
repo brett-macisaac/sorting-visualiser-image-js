@@ -13,8 +13,7 @@ const gUplImgage = document.getElementById("uplImage");
 
 const gPrimaryControls = [ gBtnSort, gBtnShuffle, gChkAscending, gCmbSorters, gUplImgage ];
 
-const gSortableImage = new SortableImage("./images/mona_lisa_small.jpg", document.getElementById("conImageCanvas"),
-                                         document.getElementById("btnStep"), document.getElementById("chkStep"));
+let gSortableImage;
 
 const gBtnStop = document.getElementById("btnStop");
 const gRngSpeed = document.getElementById("rngSpeed");
@@ -23,6 +22,15 @@ const gBtnDownload = document.getElementById("btnDownload")
 
 function init()
 {
+    const gMaxImgWidth = window.innerWidth * 0.75;
+    const gMaxImgHeight = window.innerHeight * 0.75;
+    console.log("Max Width: " + gMaxImgWidth);
+    console.log("Max Height: " + gMaxImgHeight);
+
+    gSortableImage = new SortableImage("./images/mona_lisa_small.jpg", document.getElementById("conImageCanvas"),
+                                       document.getElementById("btnStep"), document.getElementById("chkStep"), 
+                                       gMaxImgWidth, gMaxImgHeight);
+
     gBtnShuffle.onclick = Shuffle;
     gBtnSort.onclick = Sort;
     gBtnStop.onclick = Stop;
