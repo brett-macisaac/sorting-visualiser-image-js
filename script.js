@@ -5,11 +5,13 @@ import SortableImage from "./SortableImage.js";
 
 import sorters from "./sorters.js";
 
-const gBtnShuffle = document.getElementById("btnShuffle");
 const gBtnSort = document.getElementById("btnSort");
+const gBtnShuffle = document.getElementById("btnShuffle");
 const gChkAscending = document.getElementById("chkAscending");
 const gCmbSorters = document.getElementById("cmbSorters");
 const gUplImgage = document.getElementById("uplImage");
+
+const gPrimaryControls = [ gBtnSort, gBtnShuffle, gChkAscending, gCmbSorters, gUplImgage ];
 
 const gSortableImage = new SortableImage("./images/mona_lisa_small.jpg", document.getElementById("conImageCanvas"),
                                          document.getElementById("btnStep"), document.getElementById("chkStep"));
@@ -89,10 +91,15 @@ function Download()
 
 function ToggleUIDisabled()
 {
-    gBtnShuffle.disabled = !gBtnShuffle.disabled;
-    gBtnSort.disabled = !gBtnSort.disabled;
-    gChkAscending.disabled = !gChkAscending.disabled;
-    gCmbSorters.disabled = !gCmbSorters.disabled;
+    for (let i = 0; i < gPrimaryControls.length; ++i)
+    {
+        gPrimaryControls[i].disabled = !gPrimaryControls[i].disabled;
+    }
+
+    // gBtnShuffle.disabled = !gBtnShuffle.disabled;
+    // gBtnSort.disabled = !gBtnSort.disabled;
+    // gChkAscending.disabled = !gChkAscending.disabled;
+    // gCmbSorters.disabled = !gCmbSorters.disabled;
 }
 
 function PopulateComboBox()
