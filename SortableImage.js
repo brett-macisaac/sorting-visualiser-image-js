@@ -178,7 +178,7 @@ class SortableImage
         const lIndexRed1 = aIndex1 * 4;
         const lIndexRed2 = aIndex2 * 4;
 
-        for (let i = 0; i < 3; ++i)
+        for (let i = 0; i < 4; ++i)
         {
             const lColour1 = lPixelArray[lIndexRed1 + i];
 
@@ -203,7 +203,7 @@ class SortableImage
 
         const lIndexRed = aIndex * 4;
 
-        for (let i = 0; i < 3; ++i)
+        for (let i = 0; i < 4; ++i)
         {
             lPixelArray[lIndexRed + i] = aColour[i];
         }
@@ -219,7 +219,7 @@ class SortableImage
 
         const lIndexRed = aIndex * 4;
 
-        return [ lPixelArray[lIndexRed], lPixelArray[lIndexRed + 1], lPixelArray[lIndexRed + 2] ];
+        return [ lPixelArray[lIndexRed], lPixelArray[lIndexRed + 1], lPixelArray[lIndexRed + 2], lPixelArray[lIndexRed + 3] ];
     }
 
     Reset()
