@@ -8,6 +8,8 @@
     --colour-sorted: #36bd1b;
     --colour-sortindex: #0f5099;
     --colour-merged: #5226a3;
+
+    --height-footer: 75px;
 }
 
 html
@@ -23,6 +25,31 @@ html
     /* Include padding to elements' dimensions */
     box-sizing: border-box;
 }
+
+#content
+{
+    height: calc(100vh - var(--height-footer));
+
+    overflow-y: scroll;
+}
+
+#footer 
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 30px;
+
+    height: var(--height-footer);
+    width: 100%;
+
+    /* background-color: var(--colour-element-container); */
+    /* color: var(--colour-element); */
+    background-color: black;
+    color: white;
+}
+
 
 a
 {
@@ -53,16 +80,19 @@ body
     height: fit-content;
 }
 
-/* #elements
-{
-    width: 80%;
-    height: 50vh;
-} */
-
 .uiContainer
 {
     width: fit-content;
     height: fit-content;
+    max-width: 90vw;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    row-gap: 25px;
+    column-gap: 25px;
 }
 
 .outerContainer
@@ -77,7 +107,7 @@ body
     height: fit-content;
 
     /* Add space between the bottom of this container and the top of the next container. */
-    margin-bottom: 4vh;
+    margin-bottom: 35px;
 
     /* Curve the corners. */
     border-radius: 15px;
@@ -113,16 +143,12 @@ body
 
 .uiTextContainer
 {
-    height: fit-content;
-
     background-color: var(--colour-page);
 
     border: 1px solid var(--colour-page);
-    border-radius: 5pt;
+    border-radius: 0.5em;
 
     padding: 10px;
-
-    margin-right: 20px;
 }
 
 .interactable:hover
@@ -180,44 +206,17 @@ div.stat
     display: inline-block;
 }
 
-.controls label:last-child
-{
-    margin-right: 0;
-}
-
-.controls button:last-child
-{
-    margin-right: 0;
-}
-
-#stats div:last-child
-{
-    margin-right: 0;
-}
-
-#footer 
-{
-    position: absolute;
-    bottom: 0;
-
-    padding: 30px;
-
-    height: 100px;
-    width: 100%;
-
-    background-color: var(--colour-element-container);
-    color: var(--colour-element);
-
-    text-align: center;
-}
-
-#footerSpacer
-{
-    height: 100px;
-    margin-top: 8vh;
-}
-
 .footerText
 {
-    font-size: 13pt;
+    font-size: 20px;
+}
+
+/* Prevents the scrollbar from being displayed. */
+.hideScrollBar
+{
+    /* Firefox */
+    scrollbar-width: none;
+
+    /* IE 10+ */
+    -ms-overflow-style: none;
 }
