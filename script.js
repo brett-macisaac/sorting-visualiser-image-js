@@ -15,9 +15,7 @@ const gPrimaryControls = [ gBtnSort, gBtnShuffle, gChkAscending, gCmbSorters, gU
 
 let gSortableImage;
 
-const gBtnStop = document.getElementById("btnStop");
 const gRngSpeed = document.getElementById("rngSpeed");
-const gBtnDownload = document.getElementById("btnDownload")
 
 
 function init()
@@ -27,14 +25,17 @@ function init()
     console.log("Max Width: " + gMaxImgWidth);
     console.log("Max Height: " + gMaxImgHeight);
 
+    const lBtnStop = document.getElementById("btnStop");
+    const lBtnDownload = document.getElementById("btnDownload")
+
     gSortableImage = new SortableImage("./images/mona_lisa_small.jpg", document.getElementById("conImageCanvas"),
-                                       document.getElementById("btnStep"), document.getElementById("chkStep"), 
+                                       lBtnStop, document.getElementById("btnStep"), document.getElementById("chkStep"), 
                                        gMaxImgWidth, gMaxImgHeight);
 
     gBtnShuffle.onclick = Shuffle;
     gBtnSort.onclick = Sort;
-    gBtnStop.onclick = Stop;
-    gBtnDownload.onclick = Download;
+    lBtnStop.onclick = Stop;
+    lBtnDownload.onclick = Download;
 
     gRngSpeed.onchange = ChangeSortSpeed;
     ChangeSortSpeed();
